@@ -14,8 +14,35 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('layouts.main');
 });
+
+
+Route::get('/admin', function () {
+    return view('admin.admin_layout.main');
+});
+
+Route::get('/create-role', function () {
+
+
+    $user = \App\Models\User::find('2');
+//    $role = \Spatie\Permission\Models\Role::create(['name' => 'subscriber']);
+//    $permission = \Spatie\Permission\Models\Permission::create(['name' => 'category']);
+//    $role->givePermissionTo($permission);
+
+
+    //$user->assignRole('subscriber');
+
+    if ($user->hasRole('subscriber')) {
+        // do something
+        return 'has role';
+    } else {
+        return 'not his role';
+    }
+
+    return 'success';
+});
+
 
 Auth::routes();
 
