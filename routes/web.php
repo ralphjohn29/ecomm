@@ -17,33 +17,35 @@ Route::get('/', function () {
     return view('layouts.main');
 });
 
-
-Route::get('/admin', function () {
-    return view('admin.admin_layout.main');
-});
-
 Route::get('/create-role', function () {
-
-
-    $user = \App\Models\User::find('2');
+//    $user = \App\Models\User::find('1');
 //    $role = \Spatie\Permission\Models\Role::create(['name' => 'subscriber']);
 //    $permission = \Spatie\Permission\Models\Permission::create(['name' => 'category']);
 //    $role->givePermissionTo($permission);
+//    $user->assignRole('Super Admin');
+//
+//    if ($user->hasRole('Super Admin')) {
+//        // do something
+//        return 'has role';
+//    } else {
+//        return 'not his role';
+//    }
 
-
-    //$user->assignRole('subscriber');
-
-    if ($user->hasRole('subscriber')) {
-        // do something
-        return 'has role';
-    } else {
-        return 'not his role';
-    }
-
+    phpinfo();
     return 'success';
 });
 
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::group(['middleware' => ['role:Super Admin']], function () {
+
+    Route::get('/admin/dashboard', function () {
+        return view('admin.dashboard');
+    });
+
+});
+
+
+//Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
