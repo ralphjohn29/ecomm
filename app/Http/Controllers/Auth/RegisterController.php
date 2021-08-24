@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -63,24 +64,60 @@ class RegisterController extends Controller
      * @param array $data
      * @return \App\Models\User
      */
-    protected function create(array $data)
+//    protected function create(array $data)
+//    {
+//        $path = 'user/images/';
+//        $fontPath = public_path('fonts/Oliciy.ttf');
+//        $char = strtoupper($data['name']);
+//        $newAvatarName = rand(12, 34353).time().'_avatar.png';
+//        $dest = $path.$newAvatarName;
+//
+//        $createAvatar = \makeAvatar($fontPath, $dest, $char);
+//        $picture = $createAvatar == true ? $newAvatarName : '';
+//
+//        return $user = User::create([
+//            'name' => $data['name'],
+//            'email' => $data['email'],
+//            'password' => Hash::make($data['password']),
+//            'picture' => $picture,
+//        ]);
+//
+//        $user->assignRole('Super Admin');
+//    }
+
+    function register(Request $request)
     {
-        $path = 'user/images/';
-        $fontPath = public_path('fonts/Oliciy.ttf');
-        $char = strtoupper($data['name']);
-        $newAvatarName = rand(12, 34353).time().'_avatar.png';
-        $dest = $path.$newAvatarName;
-
-        $createAvatar = \makeAvatar($fontPath, $dest, $char);
-        $picture = $createAvatar == true ? $newAvatarName : '';
-
-        return $user = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-            'picture' => $picture,
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
 
+
+
+        /** Make avatar */
+
+        $path = storage_path('app/public/user/images/');
+        $fontPath = public_path('fonts/Oliciy.ttf');
+        $char = strtoupper($request->name[0]);
+        $newAvatarName = rand(12,34353).time().'_avatar.png';
+        $dest = $path.$newAvatarName;
+
+        $createAvatar = makeAvatar($fontPath,$dest,$char);
+        $picture = $createAvatar == true ? $newAvatarName : '';
+
+        $user = new User();
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->picture = $picture;
+        $user->password = Hash::make($request->password);
         $user->assignRole('Super Admin');
+        if ($user->save()) {
+            return redirect()->back()->with('success', 'You are now successfully register');
+        } else {
+            return redirect()->back()->with('error', 'Failed to register');
+        }
     }
+
+
 }

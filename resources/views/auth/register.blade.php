@@ -7,6 +7,18 @@
             <div class="card">
                 <div class="card-header">{{ __('Register') }}</div>
 
+
+                @if ( Session::get('success'))
+                    <div class="alert alert-success">
+                        {{ Session::get('success') }}
+                    </div>
+                @endif
+                @if ( Session::get('error'))
+                    <div class="alert alert-danger">
+                        {{ Session::get('error') }}
+                    </div>
+                @endif
+
                 <div class="card-body">
                     <form method="POST" action="{{ route('register') }}">
                         @csrf

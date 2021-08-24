@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +33,30 @@ Route::get('/create-role', function () {
 //    }
 
     phpinfo();
+    return 'success';
+});
+
+
+Route::get('/image', function () {
+    // Create the size of image or blank image
+    $name = '39721629823923_avatar.png';
+    $image = imagecreate(200, 200);
+    $red = rand(0, 255);
+    $green = rand(0, 255);
+    $blue = rand(0, 255);
+    $fontPath = public_path('fonts/Oliciy.ttf');
+    imagecolorallocate($image, $red, $green, $blue);
+    $firstname = 'tanya';
+    $char = strtoupper($firstname[0]);
+    $textcolor = imagecolorallocate($image, 255, 255, 255);
+    imagettftext($image, 100, 0, 50, 150, $textcolor, $fontPath, $char);
+    header("Content-Type: image/png");
+    $path = public_path("user/images/"). $name;
+//    $dest = Storage::disk('local')->put($path, 'Contents');
+
+    imagepng($image, $path);
+    imagedestroy($image);
+
     return 'success';
 });
 
