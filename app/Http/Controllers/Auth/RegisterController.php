@@ -93,10 +93,7 @@ class RegisterController extends Controller
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
 
-
-
         /** Make avatar */
-
         $path = storage_path('app/public/user/images/');
         $fontPath = public_path('fonts/Oliciy.ttf');
         $char = strtoupper($request->name[0]);
