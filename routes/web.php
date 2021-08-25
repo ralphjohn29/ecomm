@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,7 +52,7 @@ Route::get('/image', function () {
     $textcolor = imagecolorallocate($image, 255, 255, 255);
     imagettftext($image, 100, 0, 50, 150, $textcolor, $fontPath, $char);
     header("Content-Type: image/png");
-    $path = public_path("user/images/"). $name;
+    $path = public_path("user/images/") . $name;
 //    $dest = Storage::disk('local')->put($path, 'Contents');
 
     imagepng($image, $path);
@@ -69,6 +70,10 @@ Route::group(['middleware' => ['role:Super Admin']], function () {
     Route::get('/admin/dashboard', function () {
         return view('admin.dashboard');
     });
+
+    Route::get('/admin/category/', [CategoryController::class, 'index'])->name('admin.category');
+    Route::get('/admin/category/create', [CategoryController::class, 'create'])->name('admin.category.create');
+    Route::post('/admin/category/store', [CategoryController::class, 'store'])->name('admin.category.store');
 
 });
 

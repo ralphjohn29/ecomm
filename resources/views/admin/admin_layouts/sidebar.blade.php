@@ -1,11 +1,11 @@
 <div class="main-menu menu-fixed menu-dark menu-accordion menu-shadow" data-scroll-to-active="true">
     <div class="main-menu-content">
         <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
-            <li class="active"><a href="index.html"><i class="la la-home"></i><span class="menu-title" data-i18n="eCommerce Dashboard"> eCommerce Dashboard</span></a>
+            <li class="active"><a href="/"><i class="la la-home"></i><span class="menu-title" data-i18n="eCommerce Dashboard"> Store Website</span></a>
             </li>
             <li class=" navigation-header"><span data-i18n="Ecommerce">Ecommerce</span><i class="la la-ellipsis-h" data-toggle="tooltip" data-placement="right" data-original-title="Ecommerce"></i>
             </li>
-            <li class=" nav-item"><a href="ecommerce-product-shop.html"><i class="la la-th-large"></i><span class="menu-title" data-i18n="Shop">Shop</span></a>
+            <li class=" nav-item"><a href="{{ route('admin.category') }}"><i class="la la-th-large"></i><span class="menu-title" data-i18n="Shop">Categories</span></a>
             </li>
             <li class=" nav-item"><a href="ecommerce-product-detail.html"><i class="la la-list"></i><span class="menu-title" data-i18n="Product Detail">Product Detail</span></a>
             </li>

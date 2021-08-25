@@ -84,7 +84,7 @@
 <!-- Menu Mobile -->
 <div class="menu-mobile-left-content">
     <ul>
-        <li><a href="#"><img src="img/icon_hot.png" alt="Icon Hot Deals" /> <p>Hot Deals</p></a></li>
+        <li><a href="#"><img src="{{ asset('assets/img/icon_hot.png') }}" alt="Icon Hot Deals" /> <p>Hot Deals</p></a></li>
         <li><a href="#"><img src="img/icon_food.png" alt="Icon Food" /> <p>Food</p></a></li>
         <li><a href="#"><img src="img/icon_mobile.png" alt="Icon Mobile & Tablet" /> <p>Mobile & Tablet</p></a></li>
         <li><a href="#"><img src="img/icon_electric.png" alt="Icon Electric Appliances" /> <p>Electric Appliances</p></a></li>
