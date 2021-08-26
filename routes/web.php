@@ -74,6 +74,7 @@ Route::group(['middleware' => ['role:Super Admin']], function () {
     Route::get('/admin/category/', [CategoryController::class, 'index'])->name('admin.category');
     Route::get('/admin/category/create', [CategoryController::class, 'create'])->name('admin.category.create');
     Route::post('/admin/category/store', [CategoryController::class, 'store'])->name('admin.category.store');
+    Route::get('/admin/category/change-active', [CategoryController::class, 'change_active']);
 
 });
 

@@ -16,7 +16,9 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return view('admin.category.index');
+
+        $categories = Category::latest()->paginate(10);
+        return view('admin.category.index', compact('categories'));
     }
 
     /**
@@ -60,6 +62,8 @@ class CategoryController extends Controller
         ]);
         Image::make($request_image)->save(public_path('category/images/') . $image_final_name);
 
+
+        Category::created();
         return redirect()->route('admin.category')->with('success', 'Success Created Category');
     }
 
@@ -106,5 +110,15 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         //
+    }
+
+    public function change_active(Request $request){
+        $category = Category::find($request->id);
+        $category->active = $request->status;
+        $category->save();
+
+
+        return response()->json(['success' => 'Status change successfully.']);
+
     }
 }
