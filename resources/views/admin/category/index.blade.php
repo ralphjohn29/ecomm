@@ -19,11 +19,6 @@
 
     <div class="row">
         <div id="recent-transactions" class="col-12">
-            @if ($message = Session::get('success'))
-                <div class="alert alert-success">
-                    <p>{{ $message }}</p>
-                </div>
-            @endif
             <div class="card">
                 <div class="card-content">
                     <div class="table-responsive">
@@ -34,7 +29,9 @@
                                 <th class="border-top-0">Description</th>
                                 <th class="border-top-0">Image</th>
                                 <th class="border-top-0">Date Created</th>
-                                <th class="border-top-0">Actions</th>
+                                <th class="border-top-0">Edit</th>
+                                <th class="border-top-0">Delete</th>
+                                <th class="border-top-0">Toggle Active</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -53,7 +50,7 @@
                                     </td>
                                     <td><a href="{{ url('admin/category/delete/'.$category->id) }}"
                                            class="btn btn-md btn-danger"
-                                           onclick="return confirm('Are you sure you want to delete the event of {{ $category->category_name }}?')">Delete</a>
+                                           onclick="return confirm('Are you sure you want to delete the category of {{ $category->category_name }}?')">Delete</a>
                                     </td>
                                     <td>
                                         <div class="custom-control custom-switch">

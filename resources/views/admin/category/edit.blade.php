@@ -2,7 +2,7 @@
 
 
 @section('page-title', 'Product Categories')
-@section('breadcrumb-title', 'Create Categories')
+@section('breadcrumb-title', 'Edit Category ' . $category->category_name)
 
 @section('content')
     <section id="basic-form-layouts">
@@ -19,7 +19,6 @@
                             </ul>
                         </div>
                     </div>
-
                     <div class="card-content collapse show">
                         <div class="card-body">
                             @if ($errors->any())
@@ -36,34 +35,41 @@
                                 <p>fields with <span class="danger">*</span> are required.</p>
                             </div>
 
-                            <form method="post" action="{{ route('admin.category.store') }}" class="form"
-                                  enctype="multipart/form-data">
+                            <form
+                                action="{{ route('admin.category.update' , ['id' => $category->id]) }}"
+                                method="POST"
+                                class="form"
+                                enctype="multipart/form-data">
                                 @csrf
                                 <div class="form-body">
                                     <div class="form-group">
                                         <label for="categoryName">Category Name <span class="danger">*</span></label>
                                         <input type="text" id="categoryName" class="form-control" placeholder="Name"
-                                               name="category_name">
+                                               name="category_name" value="{{ old('name', $category->category_name) }}">
                                     </div>
 
                                     <div class="form-group">
                                         <label for="category_description">Description <span
                                                 class="danger">*</span></label>
                                         <textarea id="category_description" rows="5" class="form-control"
-                                                  name="category_description" placeholder="About Category"></textarea>
+                                                  name="category_description"
+                                                  placeholder="About Category">{{ old('description', $category->description) }}</textarea>
                                     </div>
 
                                     <div class="form-group row">
                                         <label class="col-md-3" for="image">Select Image<span
                                                 class="danger">*</span><br> ( size: 20x20 & max:256kb )</label>
                                         <div class="col-md-9 ">
-                                            <label id="projectinput8" class="file">
+                                            <label id="image" class="file">
                                                 <input type="file" id="image" name="image">
                                                 <span class="file-custom"></span>
                                             </label>
                                         </div>
                                     </div>
                                 </div>
+
+
+                                <input type="hidden" name="old_image" value="{{ $category->image }}">
 
                                 <div class="form-actions">
 
@@ -72,7 +78,7 @@
                                     </a>
 
                                     <button type="submit" class="btn btn-primary">
-                                        <i class="la la-check-square-o"></i> Save
+                                        <i class="la la-check-square-o"></i> Update
                                     </button>
                                 </div>
                             </form>

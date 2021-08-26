@@ -62,8 +62,6 @@ class CategoryController extends Controller
         ]);
         Image::make($request_image)->save(public_path('category/images/') . $image_final_name);
 
-
-        Category::created();
         return redirect()->route('admin.category')->with('success', 'Success Created Category');
     }
 
@@ -84,9 +82,10 @@ class CategoryController extends Controller
      * @param \App\Models\Category $category
      * @return \Illuminate\Http\Response
      */
-    public function edit(Category $category)
+    public function edit($id)
     {
-        //
+        $category = Category::findOrFail($id);
+        return view('admin.category.edit', compact('category'));
     }
 
     /**
@@ -96,9 +95,48 @@ class CategoryController extends Controller
      * @param \App\Models\Category $category
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request, $id)
     {
-        //
+
+        $request->validate([
+            'category_name' => 'required',
+            'category_description' => 'required',
+            'image' => 'mimes:jpeg,png,jpg|max:512',
+        ]);
+
+        $old_image = $request->old_image;
+        $updated_image = $request->file('image');
+
+        if ($updated_image) {
+            $image_name = $request->file('image')->getClientOriginalName();
+            $filename = pathinfo($image_name, PATHINFO_FILENAME);
+            $name_gen = hexdec((uniqid()));
+            $img_ext = strtolower($updated_image->getClientOriginalExtension());
+            $image_final_name = $filename . '_' . $name_gen . '.' . $img_ext;
+            $old_image_path = 'category/images/' . $old_image;
+
+            unlink(public_path($old_image_path));
+
+            Category::find($id)->update([
+                'category_name' => $request->category_name,
+                'description' => $request->category_description,
+                'image' => $image_final_name,
+                'updated_at' => Carbon::now(),
+            ]);
+            Image::make($updated_image)->save(public_path('category/images/') . $image_final_name);
+
+            return redirect()->route('admin.category')->with('success', 'Sucess edit category');
+
+        } else {
+
+            Category::find($id)->update([
+                'category_name' => $request->category_name,
+                'description' => $request->category_description,
+                'updated_at' => Carbon::now(),
+            ]);
+
+            return redirect()->route('admin.category')->with('success', 'Success edit category');
+        }
     }
 
     /**
@@ -107,16 +145,19 @@ class CategoryController extends Controller
      * @param \App\Models\Category $category
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category)
+    public function destroy($id)
     {
-        //
+        $category = Category::find($id);
+        unlink(public_path('category/images/' . $category->image));
+        $category->delete();
+        return redirect()->route('admin.category')->with('success', 'Delete Category successfully');
     }
 
-    public function change_active(Request $request){
-        $category = Category::find($request->id);
+    public function change_active(Request $request)
+    {
+        $category = Category::findOrFail($request->id);
         $category->active = $request->status;
         $category->save();
-
 
         return response()->json(['success' => 'Status change successfully.']);
 

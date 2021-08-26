@@ -16,7 +16,8 @@ use App\Http\Controllers\CategoryController;
 */
 
 Route::get('/', function () {
-    return view('layouts.main');
+    $categories = \App\Models\Category::where('active', 1)->orderBy('created_at')->get();
+    return view('index', compact('categories'));
 });
 
 Route::get('/create-role', function () {
@@ -74,6 +75,9 @@ Route::group(['middleware' => ['role:Super Admin']], function () {
     Route::get('/admin/category/', [CategoryController::class, 'index'])->name('admin.category');
     Route::get('/admin/category/create', [CategoryController::class, 'create'])->name('admin.category.create');
     Route::post('/admin/category/store', [CategoryController::class, 'store'])->name('admin.category.store');
+    Route::get('/admin/category/edit/{id}', [CategoryController::class, 'edit'])->name('admin.category.edit');
+    Route::post('/admin/category/update/{id}', [CategoryController::class, 'update'])->name('admin.category.update');
+    Route::get('admin/category/delete/{id}', [CategoryController::class, 'destroy']);
     Route::get('/admin/category/change-active', [CategoryController::class, 'change_active']);
 
 });
